@@ -1,6 +1,5 @@
 **/node_modules
 .env
-/sequelize/config
 /sequelize/seeders
 /dist
 /config

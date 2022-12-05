@@ -4,8 +4,7 @@
    "description": "",
    "main": "index.js",
    "scripts": {
-      "devStart": "tsc && nodemon app.ts",
-      "typeorm": "typeorm-ts-node-commonjs"
+      "devStart": "tsc && nodemon app.ts"
    },
    "keywords": [],
    "author": "",
