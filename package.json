@@ -1,0 +1,43 @@
+{
+   "name": "roomaccomodation",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "devStart": "tsc && nodemon app.ts",
+      "typeorm": "typeorm-ts-node-commonjs"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "dependencies": {
+      "@types/bcrypt": "^5.0.0",
+      "@types/express": "^4.17.14",
+      "@types/jsonwebtoken": "^8.5.9",
+      "@types/mongoose": "^5.11.97",
+      "@types/node": "^18.11.9",
+      "bcrypt": "^5.1.0",
+      "body-parser": "^1.19.1",
+      "cookie-parser": "^1.4.6",
+      "dotenv": "^16.0.3",
+      "express": "^4.17.2",
+      "jsonwebtoken": "^8.5.1",
+      "module_name": "^1.0.0",
+      "mongoose": "^6.7.4",
+      "pg": "^8.8.0",
+      "pg-hstore": "^2.3.4",
+      "postgres": "^3.3.2",
+      "postgresql": "^0.0.1",
+      "reflect-metadata": "^0.1.13",
+      "sequelize": "^6.26.0",
+      "sequelize-cli-typescript": "^3.2.0-c",
+      "uuidv4": "^6.2.13"
+   },
+   "devDependencies": {
+      "@types/node": "^16.11.10",
+      "nodemon": "^2.0.20",
+      "sequelize-cli": "^6.5.2",
+      "ts-node": "10.7.0",
+      "typescript": "4.5.2"
+   }
+}
