@@ -3,6 +3,7 @@ import auth from "./routes/auth"
 import user from "./routes/user"
 import host from "./routes/host"
 import requests from "./routes/requests"
+import accommodation from "./routes/accomodation"
 
 const {sequelize} = require("./sequelize/models")
 const app = express()
@@ -30,6 +31,7 @@ app.use("/auth", auth)
 app.use("/user", user)
 app.use("/host", host)
 app.use("/requests", requests)
+app.use("/acc", accommodation)
 connectDB()
 
 app.get("/", (req, res)=>{

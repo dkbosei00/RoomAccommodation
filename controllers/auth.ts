@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express"
 import sequelize from "sequelize"
 import brcypt from "bcrypt"
-import jsonwebtoken from "jsonwebtoken"
+import jsonwebtoken, { JsonWebTokenError } from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config()
 const db =require("../sequelize/models")
@@ -44,7 +44,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
             maxAge: maxAge * 1000
         })
 
-        res.status(200).json({
+        res.status(201).json({
             message: "User was successfully created",
             user: user.id,
             role: user.role,
@@ -115,3 +115,18 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
     }
 }
 
+/*
+export const adminAuth =async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const token = res.cookie?.jwt
+        if(token){
+            jsonwebtoken.verify(token, ACCESS_TOKEN_SECRET, (err, decodedToken) => {
+
+            })
+        }
+    } catch (error) {
+        
+    }
+
+}
+*/

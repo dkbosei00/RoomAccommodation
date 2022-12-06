@@ -1,4 +1,5 @@
 import express from "express"
+import { editprofile } from "../controllers/user";
 
 const router = express.Router()
 
@@ -6,7 +7,7 @@ router.route("/reset")
     .post()
 
 router.route("/editprofile")
-    .patch()
+    .patch(editprofile) //Will change after JWT authentication
     
 
 
