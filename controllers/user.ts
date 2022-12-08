@@ -1,15 +1,69 @@
 import express, {NextFunction, Request, Response} from "express"
 import crypto from "crypto"
-const db =require("../sequelize/models")
+import brcypt from "bcrypt"
+import { verify } from "jsonwebtoken"
+import nodemailer from "nodemailer"
 
+const db =require("../sequelize/models")
 const DB:any = db
 const {Users} = DB
 
-export const reset = async (req:Request, res:Response, next:NextFunction) => {
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string
+
+// const transport = nodemailer.createTransport({
+//     host: 
+// })
+
+type verifiedUser = {
+    user: {
+        id: string
+    }
+}
+
+export const pwdCheck = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        
+        const token = req.cookies.jwt
+       // const {id} = req.user
+        const {oldPassword} = req.body
+        const user = await Users.findOne({
+            where: {
+                //id: id
+            }
+        })
+        let pwdComparison = await brcypt.compare(oldPassword, user.password)
+        if(pwdComparison){
+            next()
+        }
     } catch (error) {
         console.log({error: error});
+    }
+}
+
+export const changePwd = async (req:Request, res:Response, next:NextFunction) =>{
+    try {
+        const {password} = req.body
+        const token = req.cookies.jwt
+        const decoded = verify(token, REFRESH_TOKEN_SECRET)
+        const id = decoded
+        let _hash = brcypt.hash(password, 10)
+        let newPassword = Users.update({
+            password: _hash
+        },
+        {
+            where: {id: id}
+        }
+        )
+
+        res.status(200).json({
+            message: "Password has been successfully changed.",
+            hasPasswordChanged: newPassword
+        })
+
+        res.redirect("/login")
+
+    } catch (error) {
+        console.log({error: error});
+        
     }
 }
 
@@ -32,6 +86,16 @@ export const editprofile = async (req:Request, res:Response, next:NextFunction) 
             Profile: updateProfile
         })
 
+    } catch (error) {
+        console.log({error: error});
+        
+    }
+}
+
+export const forgotPwd = async (req:Request, res:Response, next:NextFunction) =>{
+    try {
+        const resetPasswordToken = crypto.randomBytes(20).toString("hex")
+        const resetPasswordExpires = Date.now() + 3600000
     } catch (error) {
         console.log({error: error});
         

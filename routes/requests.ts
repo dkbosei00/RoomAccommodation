@@ -1,21 +1,23 @@
 import express from "express"
+import { book, editBook } from "../controllers/requests"
+import { basicAuth, hostAuth } from "../middleware/jwtAuth"
 
 const router = express.Router()
 
 router.route("/")
-    .post()
+    .post(book)
 
 router.route("/:id")
-    .patch()
+    .patch(editBook)
 
 router.route("/:id/comment")
-    .post()
+    .post(basicAuth,)
 
 router.route("/:id/approve")
-    .get()
+    .get(hostAuth,)
 
 router.route("/:id/reject")
-    .get()
+    .get(hostAuth,)
 
 
 export default router;
