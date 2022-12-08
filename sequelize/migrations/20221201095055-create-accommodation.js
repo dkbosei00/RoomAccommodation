@@ -19,13 +19,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       feedback: {
-        type: Sequelize.STRING
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue: []
+      },
+      has_wifi: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
       },
       no_of_rooms: {
         defaultValue: 1,
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      // Add hasWifi relation here
       price: {
         type: Sequelize.FLOAT,
         allowNull: false

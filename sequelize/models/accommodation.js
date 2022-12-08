@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     location: DataTypes.STRING,
-    feedback: DataTypes.STRING,
+    feedback: DataTypes.ARRAY(DataTypes.STRING),
     no_of_rooms: DataTypes.INTEGER,
-    hasWifi: DataTypes.BOOLEAN,
+    has_wifi: DataTypes.BOOLEAN,
     price: DataTypes.FLOAT,
     rating: DataTypes.INTEGER
   }, {

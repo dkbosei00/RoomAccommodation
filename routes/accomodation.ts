@@ -1,23 +1,19 @@
 import express from "express"
+import {addAccommodation, getAccommodationById, getAllAccommodations, provideFeedback, updateAccommodation} from "../controllers/accommodation"
 
 const router = express.Router()
 
 router.route("/")
-    .post()
-    .get()
+    .post(addAccommodation)
+    .get(getAllAccommodations)
 
 router.route("/:id")
-    .get()
+    .get(getAccommodationById)
+    .patch(updateAccommodation)
 
-router.route("/:id/rooms")
-    .post()
+router.route("/:id/feedback") //Also includes ratings
+    .post(provideFeedback) //Does not list items properly
     .get()
-
-router.route("/:id/rooms/:id")
-    .get()
-
-router.route("/:id/feedback")
-    .post()
 
 
 export default router;
