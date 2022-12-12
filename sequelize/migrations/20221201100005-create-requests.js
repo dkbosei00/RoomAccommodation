@@ -12,13 +12,17 @@ module.exports = {
         type: Sequelize.STRING
       },
       check_in: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       check_out: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       comments: {
         type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.STRING,
+        defaultValue: "Pending"
       },
       created_at: {
         allowNull: false,

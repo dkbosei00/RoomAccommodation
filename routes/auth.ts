@@ -4,20 +4,13 @@ const router = express.Router()
 import {signup, login, logout} from "../controllers/auth"
 
 router.route("/signup")
-    .post(signup)
+    .post(signup, (req:Request, res:Response, next:NextFunction) =>{
+        return res.redirect("/login")
+    })
 
 router.route("/login")
     .post(login)
-
 router.route("/logout")
     .delete(logout)
 
 export default router
-
-/*
-Some middleware I use for responsiveness
-(req:Request, res:Response, next:NextFunction) =>{
-        console.log("This is working"),
-        next()
-    },
-*/

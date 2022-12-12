@@ -39,6 +39,9 @@ module.exports = {
       rating: {
         type: Sequelize.INTEGER
       },
+      image_url: {
+        type: Sequelize.STRING
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

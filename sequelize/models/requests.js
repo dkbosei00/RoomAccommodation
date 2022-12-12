@@ -21,9 +21,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Requests.init({
     request_type: DataTypes.STRING,
-    check_in: DataTypes.DATE,
-    check_out: DataTypes.DATE,
-    comments: DataTypes.STRING
+    check_in: DataTypes.DATEONLY,
+    check_out: DataTypes.DATEONLY,
+    comments: DataTypes.STRING,
+    status: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Requests',
