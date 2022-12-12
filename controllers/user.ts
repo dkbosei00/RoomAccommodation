@@ -22,12 +22,11 @@ type verifiedUser = {
 
 export const pwdCheck = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const token = req.cookies.jwt
-       // const {id} = req.user
+        const id = res.locals?.id
         const {oldPassword} = req.body
         const user = await Users.findOne({
             where: {
-                //id: id
+                id: id
             }
         })
         let pwdComparison = await brcypt.compare(oldPassword, user.password)
@@ -42,9 +41,7 @@ export const pwdCheck = async (req:Request, res:Response, next:NextFunction) => 
 export const changePwd = async (req:Request, res:Response, next:NextFunction) =>{
     try {
         const {password} = req.body
-        const token = req.cookies.jwt
-        const decoded = verify(token, REFRESH_TOKEN_SECRET)
-        const id = decoded
+        const id = res.locals?.id
         let _hash = brcypt.hash(password, 10)
         let newPassword = Users.update({
             password: _hash
@@ -69,7 +66,8 @@ export const changePwd = async (req:Request, res:Response, next:NextFunction) =>
 
 export const editprofile = async (req:Request, res:Response, next:NextFunction) =>{
     try {
-        const {email, first_name, last_name, phone_number} = req.body        
+        const {email, first_name, last_name, phone_number} = req.body  
+        const id = res.locals?.id      
         let updateProfile = await Users.update({
             email: email,
             first_name: first_name,
@@ -77,7 +75,7 @@ export const editprofile = async (req:Request, res:Response, next:NextFunction) 
             phone_number: phone_number
         },
         {
-            where: {email: email}
+            where: {id: id}
         }
         )
 
@@ -101,3 +99,4 @@ export const forgotPwd = async (req:Request, res:Response, next:NextFunction) =>
         
     }
 }
+
