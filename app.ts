@@ -1,10 +1,10 @@
 import express, {Request, Response, NextFunction} from "express"
-import auth from "./routes/auth"
-import user from "./routes/user"
-import host from "./routes/host"
-import requests from "./routes/requests"
-import accommodation from "./routes/accomodation"
-
+import auth from "./api/auth"
+import user from "./api/user"
+import host from "./api/host"
+import requests from "./api/requests"
+import accommodation from "./api/accomodation"
+import dotenv from "dotenv"
 dotenv.config()
 const {sequelize} = require("./sequelize/models")
 const app = express()
