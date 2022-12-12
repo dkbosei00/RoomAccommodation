@@ -173,7 +173,6 @@ export const search = async (req:Request, res:Response, next:NextFunction) => {
             }]
             }
         })
-
         
         res.status(201).json({
             message: "These are the necessary results",

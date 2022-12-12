@@ -1,11 +1,9 @@
 import express, {Request, Response, NextFunction} from "express"
-import dotenv from "dotenv"
-import auth from "./api/auth"
-import user from "./api/user"
-import host from "./api/host"
-import requests from "./api/requests"
-import accommodation from "./api/accomodation"
-import morgan from "morgan"
+import auth from "./routes/auth"
+import user from "./routes/user"
+import host from "./routes/host"
+import requests from "./routes/requests"
+import accommodation from "./routes/accomodation"
 
 dotenv.config()
 const {sequelize} = require("./sequelize/models")
@@ -29,7 +27,6 @@ const connectDB = async() =>{
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
-app.use(morgan('dev'))
 
 app.use("/auth", auth)
 app.use("/user", user)
@@ -41,6 +38,7 @@ connectDB()
 app.get("/", (req, res)=>{
     res.send("This is the home page.")
 })
+
 
 try{
 app.listen(port, ()=>{
