@@ -159,6 +159,7 @@ export const search = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {query} = req.body
         let searchQuery = Accommodation.findAll({
+            attributes: ["name"],
             where: {
                 [Sequelize.Op.or]:[{
                     name:{
@@ -172,6 +173,7 @@ export const search = async (req:Request, res:Response, next:NextFunction) => {
             }]
             }
         })
+
         
         res.status(201).json({
             message: "These are the necessary results",

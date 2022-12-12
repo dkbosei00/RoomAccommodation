@@ -1,10 +1,10 @@
 import express, {Request, Response, NextFunction} from "express"
 import dotenv from "dotenv"
-import auth from "./routes/auth"
-import user from "./routes/user"
-import host from "./routes/host"
-import requests from "./routes/requests"
-import accommodation from "./routes/accomodation"
+import auth from "./api/auth"
+import user from "./api/user"
+import host from "./api/host"
+import requests from "./api/requests"
+import accommodation from "./api/accomodation"
 import morgan from "morgan"
 
 dotenv.config()
@@ -30,7 +30,6 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(morgan('dev'))
-app.set("view engine", "ejs")
 
 app.use("/auth", auth)
 app.use("/user", user)
@@ -42,15 +41,6 @@ connectDB()
 app.get("/", (req, res)=>{
     res.send("This is the home page.")
 })
-
-app.get("/login", (req, res)=>{
-    res.render("login")
-})
-
-app.get("/host", (req, res)=>{
-    res.render("host")
-})
-
 
 try{
 app.listen(port, ()=>{

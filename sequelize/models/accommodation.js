@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     has_wifi: DataTypes.BOOLEAN,
     price: DataTypes.FLOAT,
     rating: DataTypes.INTEGER,
-    image_url: DataTypes.STRING
+    //image_url: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Accommodation',
