@@ -1,11 +1,11 @@
 import express from "express"
 import { host } from "../controllers/host";
-import { adminAuth } from "../middleware/jwtAuth";
+import { jwtAuth } from "../middleware/jwtAuth";
 
 const router = express.Router()
 
 router.route("/")
-    .patch(adminAuth, host)
+    .patch(jwtAuth, host)
 
 
 export default router;

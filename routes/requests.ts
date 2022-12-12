@@ -1,6 +1,6 @@
 import express from "express"
-import { book, editBook } from "../controllers/requests"
-import { basicAuth, hostAuth } from "../middleware/jwtAuth"
+import { approve, book, editBook, reject } from "../controllers/requests"
+import { jwtAuth } from "../middleware/jwtAuth"
 
 const router = express.Router()
 
@@ -11,13 +11,13 @@ router.route("/:id")
     .patch(editBook)
 
 router.route("/:id/comment")
-    .post(basicAuth,)
+    .post(jwtAuth,)
 
 router.route("/:id/approve")
-    .get(hostAuth,)
+    .get(jwtAuth, approve)
 
 router.route("/:id/reject")
-    .get(hostAuth,)
+    .get(jwtAuth, reject)
 
 
 export default router;

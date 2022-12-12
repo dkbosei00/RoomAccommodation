@@ -5,6 +5,7 @@ const {Users} = DB
 
 export const host = async (req:Request, res:Response, next:NextFunction) =>{
     const {id, role} = req.body
+    if(res.locals.user?.role === "Admin" || "Host"){
     const user = await Users.update({
         role: role
     },{
@@ -16,5 +17,9 @@ export const host = async (req:Request, res:Response, next:NextFunction) =>{
         message: "Role changed.",
         roleChanged: user
     })
-
+    } else{
+        res.status(401).json({
+            message: "User cannot make this query."
+        })
+    }
 }

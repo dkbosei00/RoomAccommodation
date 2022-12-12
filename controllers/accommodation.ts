@@ -1,4 +1,5 @@
 import express, {NextFunction, Request, Response} from "express"
+import Sequelize from "sequelize"
 const db =require("../sequelize/models")
 
 const DB:any = db
@@ -14,18 +15,25 @@ type Accomodations = {
 export const addAccommodation = async (req:Request, res:Response, next:NextFunction) =>{
     try {
         const {name, description, location, feedback, no_of_rooms, has_wifi, price, rating} = req.body
-
-        let accommodation = Accommodation.create({name: name, description: description, location: location, feedback: feedback, no_of_rooms: no_of_rooms, has_wifi: has_wifi, price: price, rating: rating})
-
-        console.log(accommodation);
-
-        res.status(201).json({
-            message: "Accomodation has successfully been created.",
-            id: accommodation.id,
-            name: accommodation.name,
-            price: accommodation.price
-        })
-
+        if(res.locals.user?.role === "Host" || "Admin"){
+            const host_id = res.locals.user?.id
+            
+            let accommodation = Accommodation.create({name: name, description: description, location: location, feedback: feedback, no_of_rooms: no_of_rooms, has_wifi: has_wifi, price: price, rating: rating, host_id: host_id})
+            
+            console.log(accommodation);
+            
+            res.status(201).json({
+                message: "Accomodation has successfully been created.",
+                id: accommodation.id,
+                name: accommodation.name,
+                price: accommodation.price
+            })
+        }else{
+            res.status(401).json({
+                message: "User is not authorized to perform this action."
+            })
+        }
+            
     } catch (error) {
         console.log({error: error});
         
@@ -145,4 +153,33 @@ export const provideFeedback = async (req:Request, res:Response, next:NextFuncti
 
 export const getFeedback = async (req:Request, res:Response, next:NextFunction) => {
     
+}
+
+export const search = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const {query} = req.body
+        let searchQuery = Accommodation.findAll({
+            where: {
+                [Sequelize.Op.or]:[{
+                    name:{
+                    [Sequelize.Op.iLike]: "%" + query
+                    }
+                },
+            {
+                description: {
+                    [Sequelize.Op.iLike]: "%" + query
+                }
+            }]
+            }
+        })
+        
+        res.status(201).json({
+            message: "These are the necessary results",
+            searchQuery
+        })
+
+    } catch (error) {
+        console.log({error: error});
+        
+    }
 }

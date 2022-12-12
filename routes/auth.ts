@@ -10,16 +10,7 @@ router.route("/signup")
 
 router.route("/login")
     .post(login)
-
 router.route("/logout")
     .delete(logout)
 
 export default router
-
-/*
-Some middleware I use for responsiveness
-(req:Request, res:Response, next:NextFunction) =>{
-        console.log("This is working"),
-        next()
-    },
-*/
