@@ -12,6 +12,22 @@ type Accomodations = {
     price?: number
 }
 
+
+function listAccommodations (accommodationQuery:any){
+    const list = accommodationQuery.map((accommodation:any) => {
+        const container:Accomodations = {}
+        container.name = accommodation.name
+        container.description = accommodation.description
+        container.price = accommodation.price
+        container.location = accommodation.location
+
+        return container
+    })
+
+    return list
+}
+
+
 export const addAccommodation = async (req:Request, res:Response, next:NextFunction) =>{
     try {
         const {name, description, location, feedback, no_of_rooms, has_wifi, price, rating} = req.body
@@ -46,18 +62,8 @@ export const getAllAccommodations = async (req:Request, res:Response, next:NextF
             order: [["name"]]
         })
 
-        const getFunction = accommodations.map((accommodation: any)=>{
-            const container:Accomodations = {}
-            container.name = accommodation.name,
-            container.description = accommodation.description,
-            container.location = accommodation.location,
-            container.price = accommodation.price
-
-            return container
-        })
-
         res.status(200).json({
-            Accommodation: getFunction
+            Accommodation: listAccommodations(accommodations)
         })
 
     } catch (error) {
@@ -118,27 +124,25 @@ export const updateAccommodation = async (req:Request, res:Response, next:NextFu
     }
 }
 
+
 export const provideFeedback = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const id = req.params["id"]
         const {feedback, rating} = req.body
-        let feedbacks = await Accommodation.findAll({
-            attributes: ["feedback"]
-        }, {
-            where: {id: id}
-        })
 
-        feedbacks.push(feedback)
+        let accommodation = await Accommodation.findByPk(id)
 
         let providedFeedback = await Accommodation.update(
             {
-                feedback: [feedbacks],
+                feedback: [...accommodation.feedback, feedback],
                 rating: rating
             },
             {
                 where: {id: id}
             }
         )
+
+
         
         res.status(200).json({
             message: "Feedback provided.",
@@ -152,30 +156,43 @@ export const provideFeedback = async (req:Request, res:Response, next:NextFuncti
 }
 
 export const getFeedback = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const id = req.params["id"]
+        let accommodation = await Accommodation.findByPk(id)
     
+        res.status(201).json({
+            message: "Here is the feedback.",
+            feedback: accommodation.feedback
+        })
+    } catch (error) {
+        console.log({error: error});
+        
+    }
 }
 
 export const search = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {query} = req.body
-        let searchQuery = Accommodation.findAll({
+        let searchQuery = await Accommodation.findAll({
+            attributes: ["name", "description"],
             where: {
                 [Sequelize.Op.or]:[{
                     name:{
-                    [Sequelize.Op.iLike]: "%" + query
+                    [Sequelize.Op.iLike]: "%" + query + "%"
                     }
                 },
             {
                 description: {
-                    [Sequelize.Op.iLike]: "%" + query
+                    [Sequelize.Op.iLike]: "%" + query + "%"
                 }
             }]
             }
         })
+
         
         res.status(201).json({
             message: "These are the necessary results",
-            searchQuery
+            "Relevant search": listAccommodations(searchQuery)
         })
 
     } catch (error) {

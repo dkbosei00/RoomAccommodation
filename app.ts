@@ -1,12 +1,11 @@
 import express, {Request, Response, NextFunction} from "express"
+import auth from "./api/auth"
+import user from "./api/user"
+import host from "./api/host"
+import requests from "./api/requests"
+import accommodation from "./api/accomodation"
 import dotenv from "dotenv"
-import auth from "./routes/auth"
-import user from "./routes/user"
-import host from "./routes/host"
-import requests from "./routes/requests"
-import accommodation from "./routes/accomodation"
-import morgan from "morgan"
-
+import { tokenGeneration } from "./middleware/tokenGeneration"
 dotenv.config()
 const {sequelize} = require("./sequelize/models")
 const app = express()
@@ -29,27 +28,19 @@ const connectDB = async() =>{
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
-app.use(morgan('dev'))
-app.set("view engine", "ejs")
 
-app.use("/auth", auth)
-app.use("/user", user)
-app.use("/host", host)
-app.use("/requests", requests)
-app.use("/acc", accommodation)
+app.use("/api/auth", auth)
+app.use("/api/user", user)
+app.use("/api/host", host)
+app.use("/api/requests", requests)
+app.use("/api/acc", accommodation)
 connectDB()
 
-app.get("/", (req, res)=>{
+app.get("/", (req:Request, res:Response)=>{
     res.send("This is the home page.")
 })
 
-app.get("/login", (req, res)=>{
-    res.render("login")
-})
-
-app.get("/host", (req, res)=>{
-    res.render("host")
-})
+app.post("/token", tokenGeneration)
 
 
 try{
@@ -61,4 +52,4 @@ app.listen(port, ()=>{
     
 }
 
-module.exports = app
+export default app
