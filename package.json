@@ -2,9 +2,10 @@
    "name": "roomaccomodation",
    "version": "1.0.0",
    "description": "",
-   "main": "index.js",
+   "main": "app.js",
    "scripts": {
-      "devStart": "tsc && nodemon app.ts"
+      "build": "tsc",
+      "start": "node dist/app.js"
    },
    "keywords": [],
    "author": "",
@@ -34,8 +35,7 @@
       "reflect-metadata": "^0.1.13",
       "sequelize": "^6.26.0",
       "sequelize-cli-typescript": "^3.2.0-c",
-      "uuidv4": "^6.2.13",
-      "vercel": "^28.8.0"
+      "uuidv4": "^6.2.13"
    },
    "devDependencies": {
       "@types/morgan": "^1.9.3",

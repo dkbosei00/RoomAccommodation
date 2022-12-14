@@ -1,5 +1,5 @@
 import express from "express"
-import {addAccommodation, getAccommodationById, getAllAccommodations, provideFeedback, search, updateAccommodation} from "../controllers/accommodation"
+import {addAccommodation, getAccommodationById, getAllAccommodations, getFeedback, provideFeedback, search, updateAccommodation} from "../controllers/accommodation"
 import { jwtAuth } from "../middleware/jwtAuth"
 
 const router = express.Router()
@@ -15,9 +15,9 @@ router.route("/:id")
     .get(getAccommodationById)
     .patch(updateAccommodation)
 
-router.route("/:id/feedback") //Also includes ratings
-    .post(provideFeedback) //Does not list items properly
-    .get()
+router.route("/:id/feedback")
+    .post(provideFeedback)
+    .get(getFeedback)
 
 
 

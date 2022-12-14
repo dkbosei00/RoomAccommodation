@@ -1,5 +1,5 @@
 import express from "express"
-import { editprofile, pwdCheck, changePwd, forgotPwd } from "../controllers/user";
+import { editprofile, forgotPwd, changePassword } from "../controllers/user";
 import { jwtAuth } from "../middleware/jwtAuth";
 
 const router = express.Router()
@@ -9,7 +9,7 @@ router.route("/forgotPassword")
 
 
 router.route("/changePassword")
-    .post(jwtAuth, pwdCheck, changePwd) //Will change after JWT authentication
+    .post(jwtAuth, changePassword) //Will change after JWT authentication
 
 router.route("/editprofile")
     .patch(jwtAuth, editprofile) //Will change after JWT authentication

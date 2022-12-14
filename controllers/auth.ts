@@ -12,21 +12,6 @@ const {Users} = DB
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string
 
-let refreshTokens: string[] = []
-
-const generateAccessToken = async(user:any) =>{
-    return jsonwebtoken.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
-}
-
-const refreshTokenHandler = (req:Request, res:Response, next:NextFunction) =>{
-    const refreshToken = req.headers.authorization //CHECK!
-    if (refreshToken == null) return res.status(401).json({message: "There is no token"})
-    if(!refreshTokens.includes(refreshToken)) return res.status(401).json({message: "This token doesn't exist"})
-    jsonwebtoken.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err instanceof Error) return res.status(401)
-        const accessToken = generateAccessToken(user)
-    })
-}
 
 
 
@@ -85,8 +70,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) =>{
                     REFRESH_TOKEN_SECRET,
                     { expiresIn: "1d" })
 
-                refreshTokens.push(refreshToken)
-
                 res.status(202).json({
                     id: user.id,
                     email: user.email,
@@ -107,7 +90,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) =>{
 
 export const logout = async (req: Request, res: Response, next: NextFunction) =>{
     try{
-        refreshTokens = refreshTokens.filter(refreshToken => refreshToken !== req.headers.authorization)
+        //CHECK!
         res.status(202).json({ message: "User has been successfully logged out."})
         return res.redirect("/")
     }catch(err){

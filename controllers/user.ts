@@ -1,7 +1,6 @@
 import express, {NextFunction, Request, Response} from "express"
 import crypto from "crypto"
 import brcypt from "bcrypt"
-import { verify } from "jsonwebtoken"
 import nodemailer from "nodemailer"
 
 const db =require("../sequelize/models")
@@ -20,49 +19,48 @@ type verifiedUser = {
     }
 }
 
-export const pwdCheck = async (req:Request, res:Response, next:NextFunction) => {
+export const changePassword = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const id = res.locals?.id
-        const {oldPassword} = req.body
-        const user = await Users.findOne({
-            where: {
-                id: id
-            }
-        })
+        const id = res.locals.user?.id
+        console.log({id: id});
+        
+        const {oldPassword, password, reEnterPassword} = req.body
+        const user = await Users.findByPk(id)
+        
         let pwdComparison = await brcypt.compare(oldPassword, user.password)
         if(pwdComparison){
-            next()
+            if(password === reEnterPassword){
+            let _hash = brcypt.hash(password, 10)
+            let newPassword = Users.update({
+                password: _hash
+            },
+            {
+                where: {id: id}
+            }
+            )
+    
+            res.status(200).json({
+                message: "Password has been successfully changed.",
+                hasPasswordChanged: newPassword
+            })
+            
+            
+            return res.redirect("/login")
+        }else{
+            return res.status(400).json({
+                message: "Password does not match."
+            })
+        }
+        }else{
+            return res.send(400).json({
+                message: "Password does not match previous password"
+            })
         }
     } catch (error) {
         console.log({error: error});
     }
 }
 
-export const changePwd = async (req:Request, res:Response, next:NextFunction) =>{
-    try {
-        const {password} = req.body
-        const id = res.locals?.id
-        let _hash = brcypt.hash(password, 10)
-        let newPassword = Users.update({
-            password: _hash
-        },
-        {
-            where: {id: id}
-        }
-        )
-
-        res.status(200).json({
-            message: "Password has been successfully changed.",
-            hasPasswordChanged: newPassword
-        })
-
-        res.redirect("/login")
-
-    } catch (error) {
-        console.log({error: error});
-        
-    }
-}
 
 export const editprofile = async (req:Request, res:Response, next:NextFunction) =>{
     try {

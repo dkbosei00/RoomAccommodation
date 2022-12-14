@@ -5,6 +5,7 @@ import host from "./api/host"
 import requests from "./api/requests"
 import accommodation from "./api/accomodation"
 import dotenv from "dotenv"
+import { tokenGeneration } from "./middleware/tokenGeneration"
 dotenv.config()
 const {sequelize} = require("./sequelize/models")
 const app = express()
@@ -28,16 +29,18 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 
-app.use("/auth", auth)
-app.use("/user", user)
-app.use("/host", host)
-app.use("/requests", requests)
-app.use("/acc", accommodation)
+app.use("/api/auth", auth)
+app.use("/api/user", user)
+app.use("/api/host", host)
+app.use("/api/requests", requests)
+app.use("/api/acc", accommodation)
 connectDB()
 
-app.get("/", (req, res)=>{
+app.get("/", (req:Request, res:Response)=>{
     res.send("This is the home page.")
 })
+
+app.post("/token", tokenGeneration)
 
 
 try{
@@ -49,4 +52,4 @@ app.listen(port, ()=>{
     
 }
 
-module.exports = app
+export default app

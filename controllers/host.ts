@@ -4,8 +4,9 @@ const DB:any = db
 const {Users} = DB
 
 export const host = async (req:Request, res:Response, next:NextFunction) =>{
+    //Provide the id of the User whose role the admin wants to change and the role it should be
     const {id, role} = req.body
-    if(res.locals.user?.role === "Admin" || "Host"){
+    if(res.locals.user?.role === "Admin"){
     const user = await Users.update({
         role: role
     },{
