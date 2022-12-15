@@ -1,5 +1,6 @@
 import express, {NextFunction, Request, Response} from "express"
 import Sequelize from "sequelize"
+import { downloadFromAWS, uploadToAWS } from "../utils/utils.AWSImageHandler"
 const db =require("../sequelize/models")
 
 const DB:any = db
@@ -199,4 +200,45 @@ export const search = async (req:Request, res:Response, next:NextFunction) => {
         console.log({error: error});
         
     }
+}
+
+export const uploadImage = async (req:Request, res:Response, next:NextFunction) =>{
+    try {
+        const id = req.params["id"]
+
+        if(req.file == undefined) return res.sendStatus(400)
+        else{
+            const file = req.file
+            console.log(file);
+        
+            let result = await uploadToAWS(file)
+            console.log(result);
+           
+            let addImageURL = await Accommodation.update(
+                {
+                    image_url: result.Location
+                },
+                {
+                    where: {id: id}
+                }
+                )
+            
+            res.status(200).json({
+                message: "Image uploaded",
+                key: result.Key,
+                "URL Added": addImageURL
+            })
+                
+        }
+    }catch (error) {
+        console.log({error: error});
+        
+    }
+}
+
+export const downloadImage = (req:Request, res:Response, next:NextFunction) =>{
+    const key = req.params["key"]
+    const readStream = downloadFromAWS(key)
+
+    readStream.pipe(res)
 }

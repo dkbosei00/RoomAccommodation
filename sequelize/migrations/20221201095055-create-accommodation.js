@@ -42,6 +42,11 @@ module.exports = {
       image_url: {
         type: Sequelize.STRING
       },
+      availability: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: true
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE
