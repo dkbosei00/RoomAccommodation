@@ -1,6 +1,8 @@
 import express, {NextFunction, Request, Response} from "express"
 import Sequelize from "sequelize"
 import { downloadFromAWS, uploadToAWS } from "../utils/utils.AWSImageHandler"
+import fs from "fs"
+import util from "util"
 const db =require("../sequelize/models")
 
 const DB:any = db
@@ -205,15 +207,13 @@ export const search = async (req:Request, res:Response, next:NextFunction) => {
 export const uploadImage = async (req:Request, res:Response, next:NextFunction) =>{
     try {
         const id = req.params["id"]
+        const unLinkFile = util.promisify(fs.unlink)
 
         if(req.file == undefined) return res.sendStatus(400)
         else{
             const file = req.file
-            console.log(file);
-        
             let result = await uploadToAWS(file)
-            console.log(result);
-           
+            await unLinkFile(file.path)
             let addImageURL = await Accommodation.update(
                 {
                     image_url: result.Location
