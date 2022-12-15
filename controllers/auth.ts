@@ -28,7 +28,6 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         let user = await Users.create({email: email, first_name: first_name, last_name: last_name, 
             password: _hash, phone_number: phone_number})
         
-        console.log("user:",user);
 
         return res.status(201).json({
             message: "User was successfully created",

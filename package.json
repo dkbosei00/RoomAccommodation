@@ -5,7 +5,7 @@
    "main": "app.js",
    "scripts": {
       "build": "tsc",
-      "start": "node dist/app.js"
+      "start": "nodemon app.ts"
    },
    "keywords": [],
    "author": "",
@@ -16,17 +16,20 @@
       "@types/jsonwebtoken": "^8.5.9",
       "@types/mongoose": "^5.11.97",
       "@types/node": "^18.11.9",
+      "aws-sdk": "^2.1275.0",
       "bcrypt": "^5.1.0",
       "body-parser": "^1.19.1",
       "cookie-parser": "^1.4.6",
       "dotenv": "^16.0.3",
       "ejs": "^3.1.8",
       "express": "^4.17.2",
+      "express-fileupload": "^1.4.0",
       "firebase": "^9.15.0",
       "jsonwebtoken": "^8.5.1",
       "module_name": "^1.0.0",
       "mongoose": "^6.7.4",
       "morgan": "^1.10.0",
+      "multer": "^1.4.5-lts.1",
       "nodemailer": "^6.8.0",
       "pg": "^8.8.0",
       "pg-hstore": "^2.3.4",
@@ -38,7 +41,9 @@
       "uuidv4": "^6.2.13"
    },
    "devDependencies": {
+      "@types/express-fileupload": "^1.4.1",
       "@types/morgan": "^1.9.3",
+      "@types/multer": "^1.4.7",
       "@types/node": "^16.11.10",
       "@types/nodemailer": "^6.4.6",
       "nodemon": "^2.0.20",

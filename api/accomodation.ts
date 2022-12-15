@@ -1,7 +1,9 @@
 import express from "express"
-import {addAccommodation, getAccommodationById, getAllAccommodations, getFeedback, provideFeedback, search, updateAccommodation} from "../controllers/accommodation"
+import {addAccommodation, downloadImage, getAccommodationById, getAllAccommodations, getFeedback, provideFeedback, search, updateAccommodation, uploadImage} from "../controllers/accommodation"
 import { jwtAuth } from "../middleware/jwtAuth"
+import multer from "multer"
 
+const upload = multer({dest: "uploads/"})
 const router = express.Router()
 
 router.route("/")
@@ -19,6 +21,10 @@ router.route("/:id/feedback")
     .post(provideFeedback)
     .get(getFeedback)
 
+router.route("/:id/upload")
+    .post(upload.single("image"), uploadImage)
 
+router.route("/image/:key")
+    .get(downloadImage)
 
 export default router;

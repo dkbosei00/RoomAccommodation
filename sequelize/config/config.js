@@ -7,7 +7,7 @@ module.exports = {
     dialect: 'postgres',
   },
   test: {
-    url: "postgres://ztwqnuyp:dJpZpKCK0dVuJ6TEpAi_1gtXVmOB2RkY@lallah.db.elephantsql.com/ztwqnuyp",
+    url: process.env.TEST_DATABASE_URL,
     dialect: 'postgres'
   },
   production: {
