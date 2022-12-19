@@ -70,6 +70,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) =>{
                     { expiresIn: "1d" })
 
                 res.status(202).json({
+                    message: "User successfully logged in.",
                     id: user.id,
                     email: user.email,
                     accessToken,

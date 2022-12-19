@@ -34,14 +34,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      /*
+      
       reset_password_token: {
         type: Sequelize.STRING
         },
       reset_password_expires: {
         type: Sequelize.DATE
         },
-        */
+      
       created_at: {
         allowNull: false,
         type: Sequelize.DATE
