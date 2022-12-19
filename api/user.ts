@@ -1,11 +1,14 @@
 import express from "express"
-import { editprofile, forgotPwd, changePassword } from "../controllers/user";
+import { editprofile, forgotPassword, changePassword, resetPassword } from "../controllers/user";
 import { jwtAuth } from "../middleware/jwtAuth";
 
 const router = express.Router()
 
 router.route("/forgotPassword")
-    .post(forgotPwd)
+    .post(forgotPassword)
+
+router.route("/:userId/:token")
+    .post(resetPassword)
 
 
 router.route("/changePassword")
