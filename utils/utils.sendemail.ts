@@ -11,17 +11,22 @@ export const sendEmail = async (email: string, subject: string, text: string) =>
             auth: {
                 user: process.env.ETHEREAL_USER,
                 pass: process.env.ETHEREAL_PASS
-            }
+            },
+            logger: true,
+            transactionLog: true
+        },
+        {
+            from: `Admin mail <no-reply@rgt.com>`
         })
 
         await transporter.sendMail({
-            from: process.env.EMAIL,
             to: email,
             subject: subject,
             text: text
         })
 
         console.log("Email was sent successfully");
+        transporter.close()
         
     } catch (error) {
         console.log({error: error});

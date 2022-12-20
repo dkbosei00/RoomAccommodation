@@ -4,6 +4,7 @@ const DB:any = db
 const {Users} = DB
 
 export const host = async (req:Request, res:Response, next:NextFunction) =>{
+    try{
     //Provide the id of the User whose role the admin wants to change and the role it should be
     const {id, role} = req.body
     if(res.locals.user?.role === "Admin"){
@@ -23,4 +24,8 @@ export const host = async (req:Request, res:Response, next:NextFunction) =>{
             message: "User cannot make this query."
         })
     }
+}catch(error){
+    console.log({error: error});
+    return res.sendStatus(500)
+}
 }

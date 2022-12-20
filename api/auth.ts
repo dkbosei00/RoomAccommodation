@@ -4,9 +4,7 @@ const router = express.Router()
 import {signup, login, logout} from "../controllers/auth"
 
 router.route("/signup")
-    .post(signup, (req:Request, res:Response, next:NextFunction) =>{
-        return res.redirect("/login")
-    })
+    .post(signup)
 
 router.route("/login")
     .post(login)
