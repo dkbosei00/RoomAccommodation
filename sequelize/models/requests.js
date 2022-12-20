@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       Requests.belongsTo(models.Accommodation, {
         foreignKey: "accommodation_id",
         as: "accommodation"
+      }),
+      Requests.belongsTo(models.Users, {
+        foreignKey: "guest_id",
+        as: "guest"
       })
     }
   }

@@ -253,12 +253,18 @@ export const book = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {req_type, check_in, check_out, comments} = req.body
         const acc_id = req.params["id"]
+        const guest_id = res.locals.user?.id
         // Format for is in YYYY-MM-DD
         let currentDate = new Date()
         let newCurrentDate = currentDate.toISOString().split("T")[0]
         if(req_type === "Booking"){
             if(check_in >= newCurrentDate && check_out > check_in){
-            let newRequest = await Requests.create({request_type: req_type, check_in: check_in, check_out: check_out, comments: comments, accommodation_id: acc_id})
+            let newRequest = await Requests.create({request_type: req_type,
+                                check_in: check_in, 
+                                check_out: check_out, 
+                                comments: comments, 
+                                accommodation_id: acc_id, 
+                                guest_id: guest_id})
 
             console.log("Request:", newRequest);
             return res.status(201).json({

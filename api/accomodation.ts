@@ -28,6 +28,6 @@ router.route("/image/:key")
     .get(downloadImage)
 
 router.route("/:id/book")
-    .post(book)
+    .post(jwtAuth, book)
 
 export default router;
