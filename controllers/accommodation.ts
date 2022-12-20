@@ -7,6 +7,7 @@ const db =require("../sequelize/models")
 
 const DB:any = db
 const {Accommodation} = DB
+const {Requests} = DB
 
 type Accomodations = {
     name?: string,
@@ -55,7 +56,7 @@ export const addAccommodation = async (req:Request, res:Response, next:NextFunct
             
     } catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
@@ -71,7 +72,7 @@ export const getAllAccommodations = async (req:Request, res:Response, next:NextF
 
     } catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
@@ -92,7 +93,7 @@ export const getAccommodationById = async (req:Request, res:Response, next:NextF
     }
     } catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
@@ -123,7 +124,7 @@ export const updateAccommodation = async (req:Request, res:Response, next:NextFu
 
     } catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
@@ -154,7 +155,7 @@ export const provideFeedback = async (req:Request, res:Response, next:NextFuncti
 
     } catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
@@ -169,7 +170,7 @@ export const getFeedback = async (req:Request, res:Response, next:NextFunction) 
         })
     } catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
@@ -200,7 +201,7 @@ export const search = async (req:Request, res:Response, next:NextFunction) => {
 
     } catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
@@ -232,13 +233,54 @@ export const uploadImage = async (req:Request, res:Response, next:NextFunction) 
         }
     }catch (error) {
         console.log({error: error});
-        
+        return res.sendStatus(500)
     }
 }
 
 export const downloadImage = (req:Request, res:Response, next:NextFunction) =>{
+    try{
     const key = req.params["key"]
     const readStream = downloadFromAWS(key)
 
     readStream.pipe(res)
+    }catch(error){
+        console.log({error: error});
+        return res.sendStatus(500)
+    }
+}
+
+export const book = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const {req_type, check_in, check_out, comments} = req.body
+        const acc_id = req.params["id"]
+        const guest_id = res.locals.user?.id
+        // Format for is in YYYY-MM-DD
+        let currentDate = new Date()
+        let newCurrentDate = currentDate.toISOString().split("T")[0]
+        if(req_type === "Booking"){
+            if(check_in >= newCurrentDate && check_out > check_in){
+            let newRequest = await Requests.create({request_type: req_type,
+                                check_in: check_in, 
+                                check_out: check_out, 
+                                comments: comments, 
+                                accommodation_id: acc_id, 
+                                guest_id: guest_id})
+
+            console.log("Request:", newRequest);
+            return res.status(201).json({
+                message: "Request was successfully created",
+                "Request id": newRequest?.id,
+                status: newRequest?.status
+        })
+        }else{
+            return res.status(400).json({
+                message: "Invalid Date"
+            })
+        }
+
+    }
+}catch (error) {
+        console.log({error: error})
+        return res.sendStatus(500)
+    }
 }

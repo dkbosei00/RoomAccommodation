@@ -1,5 +1,5 @@
 import express from "express"
-import {addAccommodation, downloadImage, getAccommodationById, getAllAccommodations, getFeedback, provideFeedback, search, updateAccommodation, uploadImage} from "../controllers/accommodation"
+import {addAccommodation, book, downloadImage, getAccommodationById, getAllAccommodations, getFeedback, provideFeedback, search, updateAccommodation, uploadImage} from "../controllers/accommodation"
 import { jwtAuth } from "../middleware/jwtAuth"
 import multer from "multer"
 
@@ -26,5 +26,8 @@ router.route("/:id/upload")
 
 router.route("/image/:key")
     .get(downloadImage)
+
+router.route("/:id/book")
+    .post(jwtAuth, book)
 
 export default router;

@@ -38,6 +38,13 @@ module.exports = {
           model: "Accommodation",
           key: "id"
         }
+      },
+      guest_id: {
+        type: Sequelize.STRING,
+        references: {
+          model: "Users",
+          key: "id"
+        }
       }
     });
   },

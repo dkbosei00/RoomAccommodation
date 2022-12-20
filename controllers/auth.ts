@@ -33,7 +33,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
             message: "User was successfully created",
             user: user.id,
             role: user.role
-        })}
+        })
+    }
     }catch(err){
         console.log({error: err});
         return res.json({error: "An error occered."})
@@ -90,9 +91,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) =>{
 
 export const logout = async (req: Request, res: Response, next: NextFunction) =>{
     try{
-        //CHECK!
-        res.status(202).json({ message: "User has been successfully logged out."})
-        return res.redirect("/")
+            delete req.headers["authorization"]
+            return res.status(202).json({ message: "User has been successfully logged out."})
+
     }catch(err){
         console.log({error: err});
         return res.json({error: "An error occered."})

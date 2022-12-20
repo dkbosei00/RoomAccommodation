@@ -11,7 +11,7 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string
 export const jwtAuth = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const authHeader = req.headers.authorization
-        const token = authHeader && authHeader?.split(" ")[1]
+        const token = authHeader && authHeader?.split(" ")[1] //Token is in the form "Bearer [Token String]"
         console.log(token);
 
         if (token == null){
@@ -38,3 +38,4 @@ export const jwtAuth = async (req:Request, res:Response, next:NextFunction) => {
     }
 
 }
+
